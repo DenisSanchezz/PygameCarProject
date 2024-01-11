@@ -14,3 +14,7 @@
 #My facorite class is world history
 
 #My favorite game series is god of war
+
+#I have three sisters
+
+#My mom is from Honduras
