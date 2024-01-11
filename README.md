@@ -1,16 +1,16 @@
-### Hi there 👋
+### Denis Sanchez He/Him
+#I play football and basketball
 
-<!--
-**DenisSanchezz/DenisSanchezz** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+#My favorite artist is J cole
 
-Here are some ideas to get you started:
+#I like to dance
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+#I love tacos
+
+#Born the 10th of December, 2007 in Galveston Texas
+
+#Funfact about me is that I have curly hair
+
+#My facorite class is world history
+
+#My favorite game series is god of war
