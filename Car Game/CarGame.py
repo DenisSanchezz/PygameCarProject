@@ -7,6 +7,7 @@ def main():
     screenWidth = 750
     screenHeight = 900
     screen = pygame.display.set_mode((screenWidth, screenHeight))
+    pygame.display.set_caption("The Swift and the Sulky")
     
     clock = pygame.time.Clock()
     running = True
@@ -19,9 +20,7 @@ def main():
         # fill the screen with a color 
         screen.fill("black")
 
-        # RENDER YOUR GAME HERE
-
-        # flip() the display to put your work on screen
+        # update()
         pygame.display.update()
 
         clock.tick(60)  # limits FPS to 60
