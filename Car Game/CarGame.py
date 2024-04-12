@@ -1,14 +1,23 @@
 import pygame
 
-def menu(screen, menuFont, menuText, textColor):
+def menu(screen, menuFont, menuText, playText, creditsText, quitText, textColor):
     #bg
     screen.fill('0x737373')
+    
+    #gets mouse position to check if mouse is on a rect (play, exit, etc)
+    mouseX, mouseY = pygame.mouse.get_pos()
+    
     #rectangles to overlay menu text on
     pygame.draw.rect(screen, "0x000000", [75, 30, 350, 130], 100)
     pygame.draw.rect(screen, "0xFFFFFF", [75, 30, 350, 130], 10)
     
+    #create menu buttons
+    pygame.draw.rect(screen, "0xFFFFFF", [100, 225, 300, 75], 100)
+    pygame.draw.rect(screen, "0x00FF00", [100, 225, 300, 75], 10)
+    
     #render the text
     mainMenuBannerText = menuFont.render(menuText, True, textColor)
+    playButtonText = menuFont.render(playText, True, textColor)
     screen.blit(mainMenuBannerText, (150, 60))
     
     
@@ -26,13 +35,18 @@ def main():
     # setup the menu variables
     menuFont = pygame.font.SysFont("Consolas", 40, bold=True)
     textColor = ('0xFFFFFF')
+    
     menuText = "Main Menu"
+    playText = "PLAY"
+    creditsText = "CREDITS"
+    quitText = "QUIT"
 
     # loop variables
     fps = 60
     clock = pygame.time.Clock()
     running = True
-    game_active = False
+    gameActive = False
+    menuActive = True
 
     # Loop
     while running:
@@ -40,7 +54,7 @@ def main():
             if event.type == pygame.QUIT:
                 running = False
 
-        if not game_active:
+        if not gameActive and menuActive:
             menu(screen, menuFont, menuText, textColor)
 
         # Update display
