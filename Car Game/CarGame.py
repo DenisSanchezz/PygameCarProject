@@ -1,30 +1,46 @@
 import pygame
 
+def menu(screen, menuFont, menuText, textColor):
+    mainMenuBannerText = menuFont.render(menuText, True, textColor)
+    screen.blit(mainMenuBannerText, (150, 40))
+
 def main():
-    # setup
+    # init()
     pygame.init()
-    
-    screenWidth = 750
-    screenHeight = 900
-    screen = pygame.display.set_mode((screenWidth, screenHeight))
-    pygame.display.set_caption("The Swift and the Sulky")
-    
+
+    # setup the screen
+    screen_width = 500
+    screen_height = 600
+    screen = pygame.display.set_mode((screen_width, screen_height))
+    pygame.display.set_caption('The Swift and the Sulky')
+
+    # setup the menu variables
+    menuFont = pygame.font.SysFont("Consolas", 40)
+    textColor = (255, 255, 255)
+    menuText = "Main Menu"
+
+    # loop variables
+    fps = 60
     clock = pygame.time.Clock()
     running = True
+    game_active = False
 
+    # Loop
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
 
-        # fill the screen with a color 
-        screen.fill("black")
+        if not game_active:
+            menu(screen, menuFont, menuText, textColor)
 
-        # update()
+        # Update display
         pygame.display.update()
+        
+        # FPS
+        clock.tick(fps)
 
-        clock.tick(60)  # limits FPS to 60
-
+    # quit
     pygame.quit()
 
 if __name__ == "__main__":
