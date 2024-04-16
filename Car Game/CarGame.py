@@ -31,7 +31,9 @@ def menu(screen, menuFont, menuText, playText, creditsText, quitText, whiteTextC
     screen.blit(playButtonText, (200, 240))
     screen.blit(creditsButtonText, (165, 340))
     screen.blit(quitButtonText, (200, 440))
-
+def Title(screen, TitleFont, TitleText, textColor):
+    MainText = TitleFont.render(TitleText, True, textColor)
+    screen.blit(MainText, (250, 100))
 def main():
     # init()
     pygame.init()
@@ -51,7 +53,9 @@ def main():
     playText = "PLAY"
     creditsText = "CREDITS"
     quitText = "QUIT"
-
+    # render text
+    TitleFont = pygame.font.SysFont("Consolas", 40)
+    TitleText = "The Swift and the Sulky"
     # loop variables
     fps = 60
     clock = pygame.time.Clock()
@@ -67,7 +71,7 @@ def main():
 
         if not gameActive and menuActive:
             menu(screen, menuFont, menuText, playText, creditsText, quitText, whiteTextColor, blackTextColor)
-
+            Title(screen, TitleFont, TitleText, textColor)
         # Update display
         pygame.display.update()
         
