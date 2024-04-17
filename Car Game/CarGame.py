@@ -1,56 +1,49 @@
 import pygame
+import sys
+import os.path
+scriptDir = os.path.dirname(os.path.abspath(__file__))
 
-def menu(screen, menuFont, menuText, playText, creditsText, quitText, whiteTextColor, blackTextColor):
+def menu(screen, menuFont, menuText, buttons):
     #bg
     screen.fill('0x737373')
+
+    #mainMenuBannerText = menuFont.render(menuText, True, ('0x000000'))
+    #screen.blit(mainMenuBannerText, (150, 60))
+
+    for text, color, rect in buttons:
+        pygame.draw.rect(screen, color, rect, 0)
+        buttonText = menuFont.render(text, True, ('0x000000'))
+        textRect = buttonText.get_rect(center=rect.center)
+        screen.blit(buttonText, textRect)
     
-    #gets mouse position to check if mouse is on a rect (play, exit, etc)
-    mouseX, mouseY = pygame.mouse.get_pos()
-    
-    #rectangles to overlay menu text on
-    pygame.draw.rect(screen, "0x000000", [75, 30, 350, 130], 100)
-    pygame.draw.rect(screen, "0xFFFFFF", [75, 30, 350, 130], 10)
-    
-    #create menu buttons
-    pygame.draw.rect(screen, "0xFFFFFF", [100, 225, 300, 75], 100)
-    pygame.draw.rect(screen, "0x00FF00", [100, 225, 300, 75], 10)
-    
-    pygame.draw.rect(screen, "0xFFFFFF", [100, 325, 300, 75], 100)
-    pygame.draw.rect(screen, "0xFFFF00", [100, 325, 300, 75], 10)
-    
-    pygame.draw.rect(screen, "0xFFFFFF", [100, 425, 300, 75], 100)
-    pygame.draw.rect(screen, "0xFF0000", [100, 425, 300, 75], 10)
-    
-    #render the text
-    mainMenuBannerText = menuFont.render(menuText, True, whiteTextColor)
-    playButtonText = menuFont.render(playText, True, blackTextColor)
-    creditsButtonText = menuFont.render(creditsText, True, blackTextColor)
-    quitButtonText = menuFont.render(quitText, True, blackTextColor)
-    
-    screen.blit(mainMenuBannerText, (150, 60))
-    screen.blit(playButtonText, (200, 240))
-    screen.blit(creditsButtonText, (165, 340))
-    screen.blit(quitButtonText, (200, 440))
+def title(screen, TitleFont, TitleText, white):
+    MainText = TitleFont.render(TitleText, True, white)
+    screen.blit(MainText, (250, 100))
 
 def main():
-    # init()
+    # Setup
     pygame.init()
 
     # setup the screen
-    screen_width = 500
-    screen_height = 600
-    screen = pygame.display.set_mode((screen_width, screen_height))
+    screenWidth = 1000
+    screenHeight = 1000
+    screen = pygame.display.set_mode((screenWidth, screenHeight))
     pygame.display.set_caption('The Swift and the Sulky')
 
     # setup the menu variables
     menuFont = pygame.font.SysFont("Consolas", 40, bold=True)
-    whiteTextColor = ('0xFFFFFF')
-    blackTextColor = ('0x000000')
-    
     menuText = "Main Menu"
-    playText = "PLAY"
-    creditsText = "CREDITS"
-    quitText = "QUIT"
+    white = '0xFFFFFF'
+
+    titleFont = pygame.font.SysFont("Consolas", 40)
+    titleText = "The Swift and the Sulky"
+
+    # list to store all the buttons text, color, and position
+    buttons = [
+        ("PLAY", ('0x00FF00'), pygame.Rect(350, 225, 300, 75)),
+        ("CREDITS", ('0xFFFF00'), pygame.Rect(350, 325, 300, 75)),
+        ("QUIT", ('0xFF0000'), pygame.Rect(350, 425, 300, 75))
+    ]
 
     # loop variables
     fps = 60
@@ -59,14 +52,32 @@ def main():
     gameActive = False
     menuActive = True
 
+    #Background
+    RoadSurface = pygame.image.load(os.path.join(scriptDir,"Sprites/Background","Menu.png")).convert_alpha()
+    screen.blit(RoadSurface, (0, 0))
+
     # Loop
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+                sys.exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    for text, color, rect in buttons:
+                        if rect.collidepoint(event.pos):
+                            if text == "PLAY":
+                                print("PLAY")
+                            elif text == "CREDITS":
+                                print("CREDITS")
+                            elif text == "QUIT":
+                                print("QUIT")
+                                pygame.quit()
+                                sys.exit()
 
         if not gameActive and menuActive:
-            menu(screen, menuFont, menuText, playText, creditsText, quitText, whiteTextColor, blackTextColor)
+            menu(screen, menuFont, menuText, buttons)
+            title(screen, titleFont, titleText, white)
 
         # Update display
         pygame.display.update()
