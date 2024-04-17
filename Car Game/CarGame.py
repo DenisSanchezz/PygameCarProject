@@ -24,6 +24,10 @@ def title(screen, TitleFont, TitleText, white):
     MainText = TitleFont.render(TitleText, True, white)
     screen.blit(MainText, (250, 100))
 
+def credits(screen, menuFont, white, black, running):
+    screen.fill(black)
+    
+
 def main():
     # Setup
     pygame.init()
@@ -38,6 +42,7 @@ def main():
     menuFont = pygame.font.SysFont("Consolas", 40, bold=True)
     menuText = "Main Menu"
     white = '0xFFFFFF'
+    black = '0x000000'
 
     titleFont = pygame.font.SysFont("Consolas", 40)
     titleText = "The Swift and the Sulky"
@@ -73,12 +78,13 @@ def main():
                             if text == "PLAY":
                                 print("PLAY")
                             elif text == "CREDITS":
-                                print("CREDITS")
+                                print("biajiath")
+                                credits(screen, menuFont, white, black, running)
                             elif text == "QUIT":
-                                print("QUIT")
                                 pygame.quit()
                                 sys.exit()
 
+        #if the game is not active and the menu is active take to menu and add title
         if not gameActive and menuActive:
             menu(screen, menuFont, buttons)
             title(screen, titleFont, titleText, white)
