@@ -1,12 +1,21 @@
+import os.path
 import pygame
+from sys import exit
+from random import randint
+
+
+
+scriptDir = os.path.dirname(os.path.abspath(__file__))
 
 def menu(screen, menuFont, menuText, playText, creditsText, quitText, whiteTextColor, blackTextColor):
     #bg
-    screen.fill('0x737373')
-    
+    #screen.fill('0x737373')
+    startscreen = pygame.image.load(os.path.join(scriptDir,"car game graphics/","titlescreen.png")).convert_alpha()
+    screen.blit(startscreen,(0,0))
+
     #gets mouse position to check if mouse is on a rect (play, exit, etc)
     mouseX, mouseY = pygame.mouse.get_pos()
-    
+
     #rectangles to overlay menu text on
     pygame.draw.rect(screen, "0x000000", [75, 30, 350, 130], 100)
     pygame.draw.rect(screen, "0xFFFFFF", [75, 30, 350, 130], 10)
@@ -31,16 +40,14 @@ def menu(screen, menuFont, menuText, playText, creditsText, quitText, whiteTextC
     screen.blit(playButtonText, (200, 240))
     screen.blit(creditsButtonText, (165, 340))
     screen.blit(quitButtonText, (200, 440))
-def Title(screen, TitleFont, TitleText, textColor):
-    MainText = TitleFont.render(TitleText, True, textColor)
-    screen.blit(MainText, (250, 100))
+
 def main():
     # init()
     pygame.init()
 
     # setup the screen
-    screen_width = 500
-    screen_height = 600
+    screen_width = 1400
+    screen_height = 1000
     screen = pygame.display.set_mode((screen_width, screen_height))
     pygame.display.set_caption('The Swift and the Sulky')
 
@@ -53,17 +60,17 @@ def main():
     playText = "PLAY"
     creditsText = "CREDITS"
     quitText = "QUIT"
-    # render text
-    TitleFont = pygame.font.SysFont("Consolas", 40)
-    TitleText = "The Swift and the Sulky"
+
     # loop variables
     fps = 60
     clock = pygame.time.Clock()
     running = True
     gameActive = False
     menuActive = True
+    
+    
 
-    # Loop
+# Loop
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -71,7 +78,7 @@ def main():
 
         if not gameActive and menuActive:
             menu(screen, menuFont, menuText, playText, creditsText, quitText, whiteTextColor, blackTextColor)
-            Title(screen, TitleFont, TitleText, textColor)
+
         # Update display
         pygame.display.update()
         
