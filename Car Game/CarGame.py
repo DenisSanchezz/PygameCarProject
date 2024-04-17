@@ -1,11 +1,15 @@
 import pygame
 import sys
 import os.path
+from random import randint
 scriptDir = os.path.dirname(os.path.abspath(__file__))
 
-def menu(screen, menuFont, menuText, buttons):
+def menu(screen, menuFont, buttons):
     #bg
-    screen.fill('0x737373')
+    #screen.fill('0x737373')
+    
+    startscreen = pygame.image.load(os.path.join(scriptDir,"Graphics/","titlescreen.png")).convert_alpha()
+    screen.blit(startscreen,(0,0))
 
     #mainMenuBannerText = menuFont.render(menuText, True, ('0x000000'))
     #screen.blit(mainMenuBannerText, (150, 60))
@@ -19,6 +23,10 @@ def menu(screen, menuFont, menuText, buttons):
 def title(screen, TitleFont, TitleText, white):
     MainText = TitleFont.render(TitleText, True, white)
     screen.blit(MainText, (250, 100))
+
+def credits(screen, menuFont, white, black, running):
+    screen.fill(black)
+    
 
 def main():
     # Setup
@@ -34,6 +42,7 @@ def main():
     menuFont = pygame.font.SysFont("Consolas", 40, bold=True)
     menuText = "Main Menu"
     white = '0xFFFFFF'
+    black = '0x000000'
 
     titleFont = pygame.font.SysFont("Consolas", 40)
     titleText = "The Swift and the Sulky"
@@ -53,8 +62,8 @@ def main():
     menuActive = True
 
     #Background
-    RoadSurface = pygame.image.load(os.path.join(scriptDir,"Sprites/Background","Menu.png")).convert_alpha()
-    screen.blit(RoadSurface, (0, 0))
+    #RoadSurface = pygame.image.load(os.path.join(scriptDir,"Sprites/Background","Menu.png")).convert_alpha()
+    #screen.blit(RoadSurface, (0, 0))
 
     # Loop
     while running:
@@ -69,14 +78,15 @@ def main():
                             if text == "PLAY":
                                 print("PLAY")
                             elif text == "CREDITS":
-                                print("CREDITS")
+                                print("biajiath")
+                                credits(screen, menuFont, white, black, running)
                             elif text == "QUIT":
-                                print("QUIT")
                                 pygame.quit()
                                 sys.exit()
 
+        #if the game is not active and the menu is active take to menu and add title
         if not gameActive and menuActive:
-            menu(screen, menuFont, menuText, buttons)
+            menu(screen, menuFont, buttons)
             title(screen, titleFont, titleText, white)
 
         # Update display
