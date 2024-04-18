@@ -21,8 +21,47 @@ def menu(screen, menuFont, buttons):
         screen.blit(buttonText, textRect)
     
 def title(screen, TitleFont, TitleText, white):
-    MainText = TitleFont.render(TitleText, True, white)
-    screen.blit(MainText, (250, 100))
+    mainText = TitleFont.render(TitleText, True, white)
+    screen.blit(mainText, (250, 100))
+
+def credits(screen, menuFont, white, black, creditsActive, creditsButtons):
+    screen.fill(black)
+    
+    backButton = pygame.draw.rect(screen, creditsButtons[1], creditsButtons[2], 0)
+    backButtonText = menuFont.render(creditsButtons[0], True, black)
+    backButtonTextRect = backButtonText.get_rect(center=backButton.center)
+
+    #   PUT CREDITS HERE
+    creditsText = menuFont.render("",                                  
+                                   True, white)
+
+    screen.blit(creditsText, (450, 150))
+    screen.blit(backButtonText, backButtonTextRect)
+
+    creditsActive = True
+    pygame.display.update()
+
+    while creditsActive:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    if backButton.collidepoint(event.pos):
+                        creditsActive = False
+
+def play(screen, gameActive, black, roadSurface):
+    #fill screen to remove the menu stuff
+    screen.fill(black)
+
+    screen.blit(roadSurface, (100, 100))
+
+    while gameActive:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
 
 def main():
     # Setup
@@ -38,6 +77,7 @@ def main():
     menuFont = pygame.font.SysFont("Consolas", 40, bold=True)
     menuText = "Main Menu"
     white = '0xFFFFFF'
+    black = '0x000000'
 
     titleFont = pygame.font.SysFont("Consolas", 40)
     titleText = "The Swift and the Sulky"
@@ -49,16 +89,19 @@ def main():
         ("QUIT", ('0xFF0000'), pygame.Rect(350, 425, 300, 75))
     ]
 
+    # buttons used in the credits screen
+    creditsButtons = ("BACK", ('0xFFFFFF'), pygame.Rect(350, 800, 300, 75))
+
     # loop variables
     fps = 60
     clock = pygame.time.Clock()
     running = True
     gameActive = False
     menuActive = True
+    creditsActive = False
 
     #Background
-    #RoadSurface = pygame.image.load(os.path.join(scriptDir,"Sprites/Background","Menu.png")).convert_alpha()
-    #screen.blit(RoadSurface, (0, 0))
+    roadSurface = pygame.image.load(os.path.join(scriptDir,"Graphics","road.png")).convert_alpha()
 
     # Loop
     while running:
@@ -71,14 +114,20 @@ def main():
                     for text, color, rect in buttons:
                         if rect.collidepoint(event.pos):
                             if text == "PLAY":
-                                print("PLAY")
+                                #IF YOU CLICK PLAY BUTTON TAKE YOU TO ACTUAL GAME
+                                play(screen, gameActive, black, roadSurface)
+                                menuActive = False
+                                creditsActive = False
+                                gameActive = True
                             elif text == "CREDITS":
-                                print("CREDITS")
+                                #IF YOU CLICK CREDITS BUTTON TAKES YOU TO CREDITS SCREEN
+                                credits(screen, menuFont, white, black, creditsActive, creditsButtons)
                             elif text == "QUIT":
-                                print("QUIT")
+                                #IF YOU CLICK QUIT BUTTON CLOSES WINDOW
                                 pygame.quit()
                                 sys.exit()
 
+        #if the game is not active and the menu is active take to menu and add title
         if not gameActive and menuActive:
             menu(screen, menuFont, buttons)
             title(screen, titleFont, titleText, white)
