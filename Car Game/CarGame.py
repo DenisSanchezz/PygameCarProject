@@ -115,23 +115,24 @@ def main():
             if event.type == pygame.QUIT:
                 running = False
                 sys.exit()
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 1:
-                    for text, color, rect in buttons:
-                        if rect.collidepoint(event.pos):
-                            if text == "PLAY":
-                                #IF YOU CLICK PLAY BUTTON TAKE YOU TO ACTUAL GAME
-                                play(screen, gameActive, black, roadSurface, roadSurfaceRect, playerSurface, playerRect)
-                                menuActive = False
-                                creditsActive = False
-                                gameActive = True
-                            elif text == "CREDITS":
-                                #IF YOU CLICK CREDITS BUTTON TAKES YOU TO CREDITS SCREEN
-                                credits(screen, menuFont, white, black, creditsActive, creditsButtons)
-                            elif text == "QUIT":
-                                #IF YOU CLICK QUIT BUTTON CLOSES WINDOW
-                                pygame.quit()
-                                sys.exit()
+            elif menuActive:
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if event.button == 1:
+                        for text, color, rect in buttons:
+                            if rect.collidepoint(event.pos):
+                                if text == "PLAY":
+                                    #IF YOU CLICK PLAY BUTTON TAKE YOU TO ACTUAL GAME
+                                    play(screen, gameActive, black, roadSurface, roadSurfaceRect, playerSurface, playerRect)
+                                    menuActive = False
+                                    creditsActive = False
+                                    gameActive = True
+                                elif text == "CREDITS":
+                                    #IF YOU CLICK CREDITS BUTTON TAKES YOU TO CREDITS SCREEN
+                                    credits(screen, menuFont, white, black, creditsActive, creditsButtons)
+                                elif text == "QUIT":
+                                    #IF YOU CLICK QUIT BUTTON CLOSES WINDOW
+                                    pygame.quit()
+                                    sys.exit()
 
         #if the game is not active and the menu is active take to menu and add title
         if not gameActive and menuActive:
