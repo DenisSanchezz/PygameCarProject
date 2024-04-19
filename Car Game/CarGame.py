@@ -33,7 +33,7 @@ def credits(screen, menuFont, white, black, creditsActive, creditsButtons):
 
     #   PUT CREDITS HERE
     creditsText = menuFont.render("",                                  
-                                   True, white)
+                                    True, white)
 
     screen.blit(creditsText, (450, 150))
     screen.blit(backButtonText, backButtonTextRect)
@@ -51,11 +51,12 @@ def credits(screen, menuFont, white, black, creditsActive, creditsButtons):
                     if backButton.collidepoint(event.pos):
                         creditsActive = False
 
-def play(screen, gameActive, black, roadSurface):
+def play(screen, gameActive, black, roadSurface, roadSurfaceRect, playerSurface, playerRect):
     #fill screen to remove the menu stuff
     screen.fill(black)
 
-    screen.blit(roadSurface, (100, 100))
+    screen.blit(roadSurface, roadSurfaceRect)
+    screen.blit(playerSurface, playerRect)
 
     while gameActive:
         for event in pygame.event.get():
@@ -91,6 +92,10 @@ def main():
 
     # buttons used in the credits screen
     creditsButtons = ("BACK", ('0xFFFFFF'), pygame.Rect(350, 800, 300, 75))
+    
+    # game variable
+    playerSurface = pygame.image.load(os.path.join(scriptDir,"Sprites","sprite.png")).convert_alpha()
+    playerRect = playerSurface.get_rect(midbottom=(300,800))
 
     # loop variables
     fps = 60
@@ -102,30 +107,32 @@ def main():
 
     #Background
     roadSurface = pygame.image.load(os.path.join(scriptDir,"Graphics","road.png")).convert_alpha()
-
+    roadSurfaceRect = roadSurface.get_rect(topleft=(0,0))
+    
     # Loop
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
                 sys.exit()
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 1:
-                    for text, color, rect in buttons:
-                        if rect.collidepoint(event.pos):
-                            if text == "PLAY":
-                                #IF YOU CLICK PLAY BUTTON TAKE YOU TO ACTUAL GAME
-                                play(screen, gameActive, black, roadSurface)
-                                menuActive = False
-                                creditsActive = False
-                                gameActive = True
-                            elif text == "CREDITS":
-                                #IF YOU CLICK CREDITS BUTTON TAKES YOU TO CREDITS SCREEN
-                                credits(screen, menuFont, white, black, creditsActive, creditsButtons)
-                            elif text == "QUIT":
-                                #IF YOU CLICK QUIT BUTTON CLOSES WINDOW
-                                pygame.quit()
-                                sys.exit()
+            elif menuActive:
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if event.button == 1:
+                        for text, color, rect in buttons:
+                            if rect.collidepoint(event.pos):
+                                if text == "PLAY":
+                                    #IF YOU CLICK PLAY BUTTON TAKE YOU TO ACTUAL GAME
+                                    play(screen, gameActive, black, roadSurface, roadSurfaceRect, playerSurface, playerRect)
+                                    menuActive = False
+                                    creditsActive = False
+                                    gameActive = True
+                                elif text == "CREDITS":
+                                    #IF YOU CLICK CREDITS BUTTON TAKES YOU TO CREDITS SCREEN
+                                    credits(screen, menuFont, white, black, creditsActive, creditsButtons)
+                                elif text == "QUIT":
+                                    #IF YOU CLICK QUIT BUTTON CLOSES WINDOW
+                                    pygame.quit()
+                                    sys.exit()
 
         #if the game is not active and the menu is active take to menu and add title
         if not gameActive and menuActive:
