@@ -51,6 +51,31 @@ def credits(screen, menuFont, white, black, creditsActive, creditsButtons):
                     if backButton.collidepoint(event.pos):
                         creditsActive = False
 
+def skins(screen, skinsActive, white, black, menuFont, skinsButtons, skinsBannerText, creditsButtons, menuActive):
+    screen.fill(black)
+    
+    backButton = pygame.draw.rect(screen, creditsButtons[1], creditsButtons[2], 0)
+    backButtonText = menuFont.render(creditsButtons[0], True, black)
+    backButtonTextRect = backButtonText.get_rect(center=backButton.center)
+    screen.blit(backButtonText, backButtonTextRect)
+    
+    for text, color, rect in skinsButtons:
+        pygame.draw.rect(screen, color, rect, 0)
+        buttonText = menuFont.render(text, True, white)
+    
+    pygame.display.update()
+    while skinsActive:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    if backButton.collidepoint(event.pos):
+                        #change so it goes to the level screen 
+                        menuActive = True
+                        skinsActive = False
+
 def play(screen, gameActive, black, roadSurface, roadSurfaceRect, playerSurface, playerRect):
     #fill screen to remove the menu stuff
     screen.fill(black)
@@ -93,6 +118,15 @@ def main():
     # buttons used in the credits screen
     creditsButtons = ("BACK", ('0xFFFFFF'), pygame.Rect(350, 800, 300, 75))
     
+    # buttons used in skin selection
+    skinsBannerText = "SKIN SELECTION"
+    
+    skinsButtons = [
+        ("RED", ('0xFF0000'), pygame.Rect(100, 225, 200, 75)),
+        ("GREEN", ('0x00FF00'), pygame.Rect(400, 225, 200, 75)),
+        ("BLUE", ('0x0000FF'), pygame.Rect(600, 225, 200, 75))
+    ]
+    
     # game variable
     playerSurface = pygame.image.load(os.path.join(scriptDir,"Sprites","sprite.png")).convert_alpha()
     playerRect = playerSurface.get_rect(midbottom=(300,800))
@@ -104,6 +138,7 @@ def main():
     gameActive = False
     menuActive = True
     creditsActive = False
+    skinsActive = False
 
     #Background
     roadSurface = pygame.image.load(os.path.join(scriptDir,"Graphics","road.png")).convert_alpha()
@@ -122,10 +157,12 @@ def main():
                             if rect.collidepoint(event.pos):
                                 if text == "PLAY":
                                     #IF YOU CLICK PLAY BUTTON TAKE YOU TO ACTUAL GAME
-                                    play(screen, gameActive, black, roadSurface, roadSurfaceRect, playerSurface, playerRect)
+                                    #play(screen, gameActive, black, roadSurface, roadSurfaceRect, playerSurface, playerRect)
+                                    skins(screen, skinsActive, white, black, menuFont, skinsButtons, skinsBannerText, creditsButtons, menuActive)
                                     menuActive = False
                                     creditsActive = False
-                                    gameActive = True
+                                    gameActive = False
+                                    skinsActive = True
                                 elif text == "CREDITS":
                                     #IF YOU CLICK CREDITS BUTTON TAKES YOU TO CREDITS SCREEN
                                     credits(screen, menuFont, white, black, creditsActive, creditsButtons)
