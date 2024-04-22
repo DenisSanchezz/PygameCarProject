@@ -6,8 +6,10 @@
 
 Charles Pope 
 - QA Engineer
+
 Denis Sanchez
 - Project Manager
 - Designer
+  
 Braeden Boyce
 - Software Engineer
