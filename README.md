@@ -18,9 +18,13 @@ Braeden Boyce
 
 Our game, the Swift and the Sulky, is a 2D driving game with obstacles and traffic to avoid in order to finish a level. The game will include skins, an unique art style, and many challenging levels. 
 
-## **CITATIONS**
+## **Citations**
 
 ### **Graphics**
 
 **1. Background**
 -https://opengameart.org/content/2d-top-down-highway-background
+
+## **Table of Contents**
+
+- [Members](https://github.com/DenisSanchezz/PygameCarProject?tab=readme-ov-file#members)
