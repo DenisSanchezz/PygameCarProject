@@ -27,4 +27,4 @@ Our game, the Swift and the Sulky, is a 2D driving game with obstacles and traff
 
 ## **Table of Contents**
 
-- [Members](https://github.com/DenisSanchezz/PygameCarProject?tab=readme-ov-file#members)
+[Members](#members)
