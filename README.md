@@ -13,3 +13,7 @@ Denis Sanchez
   
 Braeden Boyce
 - Software Engineer
+
+## **Description**
+
+Our game, the Swift and the Sulky, is a 2D driving game with obstacles and traffic to avoid in order to finish a level. The game will include skins, an unique art style, and many challenging levels. 
