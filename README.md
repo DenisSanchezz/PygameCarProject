@@ -4,5 +4,5 @@
 
 ## **Members**
 
-Charles Pope  Denis Sanchez
+Charles Pope        Denis Sanchez
 QA Engineer
