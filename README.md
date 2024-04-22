@@ -24,7 +24,3 @@ Our game, the Swift and the Sulky, is a 2D driving game with obstacles and traff
 
 **1. Background**
 -https://opengameart.org/content/2d-top-down-highway-background
-
-## **Table of Contents**
-
-[Members](#members)
