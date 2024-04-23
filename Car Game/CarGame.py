@@ -4,7 +4,7 @@ import os.path
 from random import randint
 scriptDir = os.path.dirname(os.path.abspath(__file__))
 
-def menu(screen, menuFont, buttons):
+def menu(screen, menuFont, buttons, menuActive):
     #bg
     #screen.fill('0x737373')
     
@@ -50,8 +50,9 @@ def credits(screen, menuFont, white, black, creditsActive, creditsButtons):
                 if event.button == 1:
                     if backButton.collidepoint(event.pos):
                         creditsActive = False
+        print("Credits is actives")
 
-def skins(screen, skinsActive, white, black, menuFont, skinsButtons, skinsBannerText, creditsButtons, menuActive):
+def skins(screen, skinsActive, white, black, menuFont, skinsButtons, skinsBannerText, creditsButtons, gameActive, roadSurface, roadSurfaceRect, playerSurface, playerRect):
     screen.fill(black)
     
     backButton = pygame.draw.rect(screen, creditsButtons[1], creditsButtons[2], 0)
@@ -62,6 +63,10 @@ def skins(screen, skinsActive, white, black, menuFont, skinsButtons, skinsBanner
     for text, color, rect in skinsButtons:
         pygame.draw.rect(screen, color, rect, 0)
         buttonText = menuFont.render(text, True, white)
+        textRect = buttonText.get_rect(center=rect.center)
+        screen.blit(buttonText, textRect)
+    
+    skinsActive = True
     
     pygame.display.update()
     while skinsActive:
@@ -71,10 +76,26 @@ def skins(screen, skinsActive, white, black, menuFont, skinsButtons, skinsBanner
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
+                    for text, color, rect in creditsButtons:
+                        if rect.collidepoint(event.pos):
+                            if text == "RED":
+                                print("clicked red button")
+                                #play(screen, gameActive, black, roadSurface, roadSurfaceRect, playerSurface, playerRect)
+                                #skinsActive = False
+                            elif text == "GREEN":
+                                print("clicked green button")
+                                #play(screen, gameActive, black, roadSurface, roadSurfaceRect, playerSurface, playerRect)
+                                #skinsActive = False
+                            elif text == "BLUE":
+                                print("clicked blue button")
+                                #play(screen, gameActive, black, roadSurface, roadSurfaceRect, playerSurface, playerRect)
+                                #skinsActive = False
                     if backButton.collidepoint(event.pos):
                         #change so it goes to the level screen 
+                        main()
                         menuActive = True
                         skinsActive = False
+        print("Skins is active")
 
 def play(screen, gameActive, black, roadSurface, roadSurfaceRect, playerSurface, playerRect):
     #fill screen to remove the menu stuff
@@ -88,6 +109,7 @@ def play(screen, gameActive, black, roadSurface, roadSurfaceRect, playerSurface,
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+        print("gameActive")
 
 def main():
     # Setup
@@ -158,11 +180,10 @@ def main():
                                 if text == "PLAY":
                                     #IF YOU CLICK PLAY BUTTON TAKE YOU TO ACTUAL GAME
                                     #play(screen, gameActive, black, roadSurface, roadSurfaceRect, playerSurface, playerRect)
-                                    skins(screen, skinsActive, white, black, menuFont, skinsButtons, skinsBannerText, creditsButtons, menuActive)
+                                    skins(screen, skinsActive, white, black, menuFont, skinsButtons, skinsBannerText, creditsButtons, gameActive, roadSurface, roadSurfaceRect, playerSurface, playerRect)
                                     menuActive = False
                                     creditsActive = False
                                     gameActive = False
-                                    skinsActive = True
                                 elif text == "CREDITS":
                                     #IF YOU CLICK CREDITS BUTTON TAKES YOU TO CREDITS SCREEN
                                     credits(screen, menuFont, white, black, creditsActive, creditsButtons)
@@ -173,7 +194,8 @@ def main():
 
         #if the game is not active and the menu is active take to menu and add title
         if not gameActive and menuActive:
-            menu(screen, menuFont, buttons)
+            print("menuActive")
+            menu(screen, menuFont, buttons, menuActive)
             title(screen, titleFont, titleText, white)
 
         # Update display
