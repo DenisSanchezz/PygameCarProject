@@ -32,10 +32,23 @@ def credits(screen, menuFont, white, black, creditsActive, creditsButtons):
     backButtonTextRect = backButtonText.get_rect(center=backButton.center)
 
     #   PUT CREDITS HERE
-    creditsText = menuFont.render("",                                  
+    creditsText1 = menuFont.render("DEVELOPER TEAM",                                  
                                     True, white)
+    
+    creditsText2 = menuFont.render("Braeden Boyce",                                  
+                                    True, white)
+    creditsText3 = menuFont.render("Charles Pope",                                  
+                                    True, white)
+    creditsText4 = menuFont.render("Dennis Sanchez",                                  
+                                    True, white)
+    screen.blit(creditsText1, (350, 100))
+    screen.blit(creditsText2, (350, 180))
+    screen.blit(creditsText3, (350, 240))
+    screen.blit(creditsText4, (350, 300))
 
-    screen.blit(creditsText, (450, 150))
+
+
+
     screen.blit(backButtonText, backButtonTextRect)
 
     creditsActive = True
@@ -150,7 +163,7 @@ def main():
     ]
     
     # game variable
-    playerSurface = pygame.image.load(os.path.join(scriptDir,"Sprites","sprite.png")).convert_alpha()
+    playerSurface = pygame.image.load(os.path.join(scriptDir,"Graphics","Sprites","blackcar.png")).convert_alpha()
     playerRect = playerSurface.get_rect(midbottom=(300,800))
 
     # loop variables
