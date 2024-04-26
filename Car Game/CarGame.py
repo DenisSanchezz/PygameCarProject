@@ -32,23 +32,24 @@ def credits(screen, menuFont, white, black, creditsActive, creditsButtons):
     backButtonTextRect = backButtonText.get_rect(center=backButton.center)
 
     #   PUT CREDITS HERE
-    creditsText1 = menuFont.render("DEVELOPER TEAM",                                  
+    creditsText1 = menuFont.render("| THE FLYING BEARS |",                                  
                                     True, white)
     
-    creditsText2 = menuFont.render("Braeden Boyce",                                  
+    creditsText2 = menuFont.render("DEVELOPER TEAM",                                  
                                     True, white)
-    creditsText3 = menuFont.render("Charles Pope",                                  
+    
+    creditsText3 = menuFont.render("Braeden Boyce",                                  
                                     True, white)
-    creditsText4 = menuFont.render("Dennis Sanchez",                                  
+    creditsText4 = menuFont.render("Charles Pope",                                  
                                     True, white)
-    screen.blit(creditsText1, (350, 100))
-    screen.blit(creditsText2, (350, 180))
-    screen.blit(creditsText3, (350, 240))
-    screen.blit(creditsText4, (350, 300))
-
-
-
-
+    creditsText5 = menuFont.render("Denis Sanchez",                                  
+                                    True, white)
+    
+    screen.blit(creditsText1, (275, 60))
+    screen.blit(creditsText2, (350, 140))
+    screen.blit(creditsText3, (350, 220))
+    screen.blit(creditsText4, (350, 280))
+    screen.blit(creditsText5, (350, 340))
     screen.blit(backButtonText, backButtonTextRect)
 
     creditsActive = True
@@ -64,6 +65,63 @@ def credits(screen, menuFont, white, black, creditsActive, creditsButtons):
                     if backButton.collidepoint(event.pos):
                         creditsActive = False
         #print("Credits is actives")
+
+def levelSelect(screen, levelSelectActive, white, black, menuFont, levelSelectButtons, levelSelectText, creditsButtons, menuActive, gameActive, skinsButtons, skinsBannerText, skinsActive):
+    screen.fill('0x737373')
+    
+    levelSelectActive = True
+    
+    backButton = pygame.draw.rect(screen, creditsButtons[1], creditsButtons[2], 0)
+    backButtonText = menuFont.render(creditsButtons[0], True, black)
+    backButtonTextRect = backButtonText.get_rect(center=backButton.center)
+    
+    levelSelectBanner = menuFont.render(levelSelectText, True, white)
+    
+    screen.blit(backButtonText, backButtonTextRect)
+    screen.blit(levelSelectBanner, (365, 100))
+    
+    for text, color, rect in levelSelectButtons:
+        pygame.draw.rect(screen, color, rect, 0)
+        buttonText = menuFont.render(text, True, white)
+        textRect = buttonText.get_rect(center=rect.center)
+        screen.blit(buttonText, textRect)
+    
+    pygame.display.update()
+    while levelSelectActive:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    for text, color, rect in levelSelectButtons:
+                        if rect.collidepoint(event.pos):
+                            if text == "Level 1":
+                                roadSurface = pygame.image.load(os.path.join(scriptDir,"Graphics","road.png")).convert_alpha()
+                                roadSurfaceRect = roadSurface.get_rect(topleft=(0,0))
+                                
+                                skins(screen, skinsActive, white, black, menuFont, skinsButtons, skinsBannerText, creditsButtons, gameActive, roadSurface, roadSurfaceRect)
+                                
+                                levelSelectActive = False
+                            elif text == "Level 2":
+                                roadSurface = pygame.image.load(os.path.join(scriptDir,"Graphics","BeachRoad.png")).convert_alpha()
+                                roadSurfaceRect = roadSurface.get_rect(topleft=(0,0))
+                                
+                                skins(screen, skinsActive, white, black, menuFont, skinsButtons, skinsBannerText, creditsButtons, gameActive, roadSurface, roadSurfaceRect)
+                                
+                                levelSelectActive = False
+                            elif text == "Level 3":
+                                roadSurface = pygame.image.load(os.path.join(scriptDir,"Graphics","CityRoad.png")).convert_alpha()
+                                roadSurfaceRect = roadSurface.get_rect(topleft=(0,0))
+                                
+                                skins(screen, skinsActive, white, black, menuFont, skinsButtons, skinsBannerText, creditsButtons, gameActive, roadSurface, roadSurfaceRect)
+                                
+                                levelSelectActive = False
+                    if backButton.collidepoint(event.pos):
+                        #change so it goes to the level screen 
+                        main()
+                        menuActive = True
+                        levelSelectActive = False
 
 def skins(screen, skinsActive, white, black, menuFont, skinsButtons, skinsBannerText, creditsButtons, gameActive, roadSurface, roadSurfaceRect):
     screen.fill('0x737373')
@@ -134,12 +192,21 @@ def play(screen, gameActive, black, roadSurface, roadSurfaceRect, playerSurface,
     screen.blit(roadSurface, roadSurfaceRect)
     screen.blit(playerSurface, playerRect)
 
+    gameActive = True
+    pygame.display.update()
+    
     while gameActive:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-        print("gameActive")
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_d:
+                    #playerRect.x += 10
+                    print("right")
+                elif event.key == pygame.K_a:
+                    print("left")
+        #print("gameActive")
 
 def main():
     # Setup
@@ -160,19 +227,18 @@ def main():
     titleFont = pygame.font.SysFont("Consolas", 40)
     titleText = "The Swift and the Sulky"
 
-    # list to store all the buttons text, color, and position
+    # main menu buttons
     buttons = [
         ("PLAY", ('0x00FF00'), pygame.Rect(350, 225, 300, 75)),
         ("CREDITS", ('0xFFFF00'), pygame.Rect(350, 325, 300, 75)),
         ("QUIT", ('0xFF0000'), pygame.Rect(350, 425, 300, 75))
     ]
 
-    # buttons used in the credits screen
+    # credits screen variables
     creditsButtons = ("BACK", ('0xFFFFFF'), pygame.Rect(350, 800, 300, 75))
     
-    # buttons used in skin selection
+    # skin select variables
     skinsBannerText = "SKIN SELECTION"
-    
     skinsButtons = [
         ("Red", ('0xFF0000'), pygame.Rect(100, 225, 200, 75)),
         ("Black", ('0x4d4d4d'), pygame.Rect(400, 225, 200, 75)),
@@ -180,6 +246,14 @@ def main():
         ("White", ('0xFFFFFF'), pygame.Rect(100, 425, 200, 75)),
         ("Yellow", ('0xFFFF00'), pygame.Rect(400, 425, 200, 75))
     ]
+    
+    # level select variables
+    levelSelectButtons = [
+        ("Level 1", ('0x000000'), pygame.Rect(100, 225, 200, 75)),
+        ("Level 2", ('0x000000'), pygame.Rect(400, 225, 200, 75)),
+        ("Level 3", ('0x000000'), pygame.Rect(700, 225, 200, 75))
+    ]
+    levelSelectText = "Select Level"
     
     # game variable
     #playerSurface = pygame.image.load(os.path.join(scriptDir,"Graphics/Sprites","sprite.png")).convert_alpha()
@@ -193,10 +267,7 @@ def main():
     menuActive = True
     creditsActive = False
     skinsActive = False
-
-    #Background
-    roadSurface = pygame.image.load(os.path.join(scriptDir,"Graphics","road.png")).convert_alpha()
-    roadSurfaceRect = roadSurface.get_rect(topleft=(0,0))
+    levelSelectActive = False
     
     # Loop
     while running:
@@ -204,7 +275,7 @@ def main():
             if event.type == pygame.QUIT:
                 running = False
                 sys.exit()
-            elif menuActive:
+            if menuActive:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if event.button == 1:
                         for text, color, rect in buttons:
@@ -212,7 +283,8 @@ def main():
                                 if text == "PLAY":
                                     #IF YOU CLICK PLAY BUTTON TAKE YOU TO ACTUAL GAME
                                     #play(screen, gameActive, black, roadSurface, roadSurfaceRect, playerSurface, playerRect)
-                                    skins(screen, skinsActive, white, black, menuFont, skinsButtons, skinsBannerText, creditsButtons, gameActive, roadSurface, roadSurfaceRect)
+                                    levelSelect(screen, levelSelectActive, white, black, menuFont, levelSelectButtons, levelSelectText, creditsButtons, menuActive, gameActive, skinsButtons, skinsBannerText, skinsActive)
+                                    #skins(screen, skinsActive, white, black, menuFont, skinsButtons, skinsBannerText, creditsButtons, gameActive, roadSurface, roadSurfaceRect)
                                     menuActive = False
                                     creditsActive = False
                                     gameActive = False
