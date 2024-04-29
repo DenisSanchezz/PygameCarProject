@@ -66,7 +66,7 @@ def credits(screen, menuFont, white, black, creditsActive, creditsButtons):
                         creditsActive = False
         #print("Credits is actives")
 
-def levelSelect(screen, levelSelectActive, white, black, menuFont, levelSelectButtons, levelSelectText, creditsButtons, menuActive, gameActive, skinsButtons, skinsBannerText, skinsActive):
+def levelSelect(screen, playerX, playerY, levelSelectActive, white, black, menuFont, levelSelectButtons, levelSelectText, creditsButtons, menuActive, gameActive, skinsButtons, skinsBannerText, skinsActive):
     screen.fill('0x737373')
     
     levelSelectActive = True
@@ -100,21 +100,21 @@ def levelSelect(screen, levelSelectActive, white, black, menuFont, levelSelectBu
                                 roadSurface = pygame.image.load(os.path.join(scriptDir,"Graphics","road.png")).convert_alpha()
                                 roadSurfaceRect = roadSurface.get_rect(topleft=(0,0))
                                 
-                                skins(screen, skinsActive, white, black, menuFont, skinsButtons, skinsBannerText, creditsButtons, gameActive, roadSurface, roadSurfaceRect)
+                                skins(screen, playerX, playerY, skinsActive, white, black, menuFont, skinsButtons, skinsBannerText, creditsButtons, gameActive, roadSurface, roadSurfaceRect)
                                 
                                 levelSelectActive = False
                             elif text == "Level 2":
                                 roadSurface = pygame.image.load(os.path.join(scriptDir,"Graphics","BeachRoad.png")).convert_alpha()
                                 roadSurfaceRect = roadSurface.get_rect(topleft=(0,0))
                                 
-                                skins(screen, skinsActive, white, black, menuFont, skinsButtons, skinsBannerText, creditsButtons, gameActive, roadSurface, roadSurfaceRect)
+                                skins(screen, playerX, playerY, skinsActive, white, black, menuFont, skinsButtons, skinsBannerText, creditsButtons, gameActive, roadSurface, roadSurfaceRect)
                                 
                                 levelSelectActive = False
                             elif text == "Level 3":
                                 roadSurface = pygame.image.load(os.path.join(scriptDir,"Graphics","CityRoad.png")).convert_alpha()
                                 roadSurfaceRect = roadSurface.get_rect(topleft=(0,0))
                                 
-                                skins(screen, skinsActive, white, black, menuFont, skinsButtons, skinsBannerText, creditsButtons, gameActive, roadSurface, roadSurfaceRect)
+                                skins(screen, playerX, playerY, skinsActive, white, black, menuFont, skinsButtons, skinsBannerText, creditsButtons, gameActive, roadSurface, roadSurfaceRect)
                                 
                                 levelSelectActive = False
                     if backButton.collidepoint(event.pos):
@@ -123,7 +123,7 @@ def levelSelect(screen, levelSelectActive, white, black, menuFont, levelSelectBu
                         menuActive = True
                         levelSelectActive = False
 
-def skins(screen, skinsActive, white, black, menuFont, skinsButtons, skinsBannerText, creditsButtons, gameActive, roadSurface, roadSurfaceRect):
+def skins(screen, playerX, playerY, skinsActive, white, black, menuFont, skinsButtons, skinsBannerText, creditsButtons, gameActive, roadSurface, roadSurfaceRect):
     screen.fill('0x737373')
     
     backButton = pygame.draw.rect(screen, creditsButtons[1], creditsButtons[2], 0)
@@ -155,57 +155,60 @@ def skins(screen, skinsActive, white, black, menuFont, skinsButtons, skinsBanner
                         if rect.collidepoint(event.pos):
                             if text == "Red":
                                 playerSurface = pygame.image.load(os.path.join(scriptDir,"Graphics/Sprites","RedCar.png")).convert_alpha()
-                                playerRect = playerSurface.get_rect(midbottom=(300,800))
-                                play(screen, gameActive, black, roadSurface, roadSurfaceRect, playerSurface, playerRect)
+                                playerRect = playerSurface.get_rect(midbottom=(playerX,playerY))
+                                play(screen, playerX, playerY, gameActive, black, roadSurface, roadSurfaceRect, playerSurface, playerRect)
                                 skinsActive = False
                             elif text == "Black":
                                 playerSurface = pygame.image.load(os.path.join(scriptDir,"Graphics/Sprites","BlackCar.png")).convert_alpha()
-                                playerRect = playerSurface.get_rect(midbottom=(300,800))
-                                play(screen, gameActive, black, roadSurface, roadSurfaceRect, playerSurface, playerRect)
+                                playerRect = playerSurface.get_rect(midbottom=(playerX,playerY))
+                                play(screen, playerX, playerY, gameActive, black, roadSurface, roadSurfaceRect, playerSurface, playerRect)
                                 skinsActive = False
                             elif text == "Blue":
                                 playerSurface = pygame.image.load(os.path.join(scriptDir,"Graphics/Sprites","BlueCar.png")).convert_alpha()
-                                playerRect = playerSurface.get_rect(midbottom=(300,800))
-                                play(screen, gameActive, black, roadSurface, roadSurfaceRect, playerSurface, playerRect)
+                                playerRect = playerSurface.get_rect(midbottom=(playerX,playerY))
+                                play(screen, playerX, playerY, gameActive, black, roadSurface, roadSurfaceRect, playerSurface, playerRect)
                                 skinsActive = False
                             elif text == "White":
                                 playerSurface = pygame.image.load(os.path.join(scriptDir,"Graphics/Sprites","WhiteCar.png")).convert_alpha()
-                                playerRect = playerSurface.get_rect(midbottom=(300,800))
-                                play(screen, gameActive, black, roadSurface, roadSurfaceRect, playerSurface, playerRect)
+                                playerRect = playerSurface.get_rect(midbottom=(playerX,playerY))
+                                play(screen, playerX, playerY, gameActive, black, roadSurface, roadSurfaceRect, playerSurface, playerRect)
                                 skinsActive = False
                             elif text == "Yellow":
                                 playerSurface = pygame.image.load(os.path.join(scriptDir,"Graphics/Sprites","YellowCar.png")).convert_alpha()
-                                playerRect = playerSurface.get_rect(midbottom=(300,800))
-                                play(screen, gameActive, black, roadSurface, roadSurfaceRect, playerSurface, playerRect)
+                                playerRect = playerSurface.get_rect(midbottom=(playerX,playerY))
+                                play(screen, playerX, playerY, gameActive, black, roadSurface, roadSurfaceRect, playerSurface, playerRect)
                                 skinsActive = False
                     if backButton.collidepoint(event.pos):
                         #change so it goes to the level screen 
                         main()
                         menuActive = True
                         skinsActive = False
-        print("Skins is active")
+        #print("Skins is active")
 
-def play(screen, gameActive, black, roadSurface, roadSurfaceRect, playerSurface, playerRect):
+def play(screen, playerX, playerY, gameActive, black, roadSurface, roadSurfaceRect, playerSurface, playerRect):
     #fill screen to remove the menu stuff
     screen.fill(black)
-
     screen.blit(roadSurface, roadSurfaceRect)
     screen.blit(playerSurface, playerRect)
-
+    playerSpeed = 5
+    
     gameActive = True
     pygame.display.update()
-    
+
     while gameActive:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_d:
-                    #playerRect.x += 10
+                if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
+                    playerX += 100
+                    print(playerX)
                     print("right")
-                elif event.key == pygame.K_a:
+                elif event.key == pygame.K_a or event.key == pygame.K_LEFT:
                     print("left")
+        
+        
         #print("gameActive")
 
 def main():
@@ -255,7 +258,10 @@ def main():
     ]
     levelSelectText = "Select Level"
     
-    # game variable
+    # player variable
+    playerX = 300
+    playerY = 800
+    
     #playerSurface = pygame.image.load(os.path.join(scriptDir,"Graphics/Sprites","sprite.png")).convert_alpha()
     #playerRect = playerSurface.get_rect(midbottom=(300,800))
 
@@ -283,7 +289,7 @@ def main():
                                 if text == "PLAY":
                                     #IF YOU CLICK PLAY BUTTON TAKE YOU TO ACTUAL GAME
                                     #play(screen, gameActive, black, roadSurface, roadSurfaceRect, playerSurface, playerRect)
-                                    levelSelect(screen, levelSelectActive, white, black, menuFont, levelSelectButtons, levelSelectText, creditsButtons, menuActive, gameActive, skinsButtons, skinsBannerText, skinsActive)
+                                    levelSelect(screen, playerX, playerY, levelSelectActive, white, black, menuFont, levelSelectButtons, levelSelectText, creditsButtons, menuActive, gameActive, skinsButtons, skinsBannerText, skinsActive)
                                     #skins(screen, skinsActive, white, black, menuFont, skinsButtons, skinsBannerText, creditsButtons, gameActive, roadSurface, roadSurfaceRect)
                                     menuActive = False
                                     creditsActive = False
