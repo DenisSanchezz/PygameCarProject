@@ -24,6 +24,47 @@ def title(screen, TitleFont, TitleText, white):
     mainText = TitleFont.render(TitleText, True, white)
     screen.blit(mainText, (250, 100))
 
+def instructions(screen, menuFont, white, black, instructionsActive, instructionsButtons):
+    screen.fill(black)
+    
+    backButton = pygame.draw.rect(screen, instructionsButtons[1], instructionsButtons[2], 0)
+    backButtonText = menuFont.render(instructionsButtons[0], True, black)
+    backButtonTextRect = backButtonText.get_rect(center=backButton.center)
+
+    #   PUT INSTRUCTIONS HERE
+    instructionsText1 = menuFont.render("INSTRUCTIONS",                                  
+                                    True, white)
+    
+    instructionsText2 = menuFont.render("Use WASD to move around",                                  
+                                    True, white)
+    
+    instructionsText3 = menuFont.render("Avoid obstacles such as cones",                                  
+                                    True, white)
+    instructionsText4 = menuFont.render("Watch out for incoming enemy cars",                                  
+                                    True, white)
+    instructionsText5 = menuFont.render("Last as long as you can!",                                  
+                                    True, white)
+    
+    screen.blit(instructionsText1, (350, 60))
+    screen.blit(instructionsText2, (220, 140))
+    screen.blit(instructionsText3, (180, 220))
+    screen.blit(instructionsText4, (115, 280))
+    screen.blit(instructionsText5, (220, 340))
+    screen.blit(backButtonText, backButtonTextRect)
+
+    instructionsActive = True
+    pygame.display.update()
+    
+    while instructionsActive:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    if backButton.collidepoint(event.pos):
+                        instructionsActive = False
+
 def credits(screen, menuFont, white, black, creditsActive, creditsButtons):
     screen.fill(black)
     
@@ -100,21 +141,21 @@ def levelSelect(screen, playerX, playerY, levelSelectActive, white, black, menuF
                                 roadSurface = pygame.image.load(os.path.join(scriptDir,"Graphics","road.png")).convert_alpha()
                                 roadSurfaceRect = roadSurface.get_rect(topleft=(0,0))
                                 
-                                skins(screen, playerX, playerY, skinsActive, white, black, menuFont, skinsButtons, skinsBannerText, creditsButtons, gameActive, roadSurface, roadSurfaceRect)
+                                skins(screen, playerX, playerY, skinsActive, white, black, menuFont, skinsButtons, skinsBannerText, creditsButtons, gameActive, roadSurface, roadSurfaceRect, levelSelectActive, levelSelectButtons, levelSelectText, menuActive)
                                 
                                 levelSelectActive = False
                             elif text == "Level 2":
                                 roadSurface = pygame.image.load(os.path.join(scriptDir,"Graphics","BeachRoad.png")).convert_alpha()
                                 roadSurfaceRect = roadSurface.get_rect(topleft=(0,0))
                                 
-                                skins(screen, playerX, playerY, skinsActive, white, black, menuFont, skinsButtons, skinsBannerText, creditsButtons, gameActive, roadSurface, roadSurfaceRect)
+                                skins(screen, playerX, playerY, skinsActive, white, black, menuFont, skinsButtons, skinsBannerText, creditsButtons, gameActive, roadSurface, roadSurfaceRect, levelSelectActive, levelSelectButtons, levelSelectText, menuActive)
                                 
                                 levelSelectActive = False
                             elif text == "Level 3":
                                 roadSurface = pygame.image.load(os.path.join(scriptDir,"Graphics","CityRoad.png")).convert_alpha()
                                 roadSurfaceRect = roadSurface.get_rect(topleft=(0,0))
                                 
-                                skins(screen, playerX, playerY, skinsActive, white, black, menuFont, skinsButtons, skinsBannerText, creditsButtons, gameActive, roadSurface, roadSurfaceRect)
+                                skins(screen, playerX, playerY, skinsActive, white, black, menuFont, skinsButtons, skinsBannerText, creditsButtons, gameActive, roadSurface, roadSurfaceRect, levelSelectActive, levelSelectButtons, levelSelectText, menuActive)
                                 
                                 levelSelectActive = False
                     if backButton.collidepoint(event.pos):
@@ -123,7 +164,7 @@ def levelSelect(screen, playerX, playerY, levelSelectActive, white, black, menuF
                         menuActive = True
                         levelSelectActive = False
 
-def skins(screen, playerX, playerY, skinsActive, white, black, menuFont, skinsButtons, skinsBannerText, creditsButtons, gameActive, roadSurface, roadSurfaceRect):
+def skins(screen, playerX, playerY, skinsActive, white, black, menuFont, skinsButtons, skinsBannerText, creditsButtons, gameActive, roadSurface, roadSurfaceRect, levelSelectActive, levelSelectButtons, levelSelectText, menuActive):
     screen.fill('0x737373')
     
     backButton = pygame.draw.rect(screen, creditsButtons[1], creditsButtons[2], 0)
@@ -180,20 +221,27 @@ def skins(screen, playerX, playerY, skinsActive, white, black, menuFont, skinsBu
                                 skinsActive = False
                     if backButton.collidepoint(event.pos):
                         #change so it goes to the level screen 
-                        main()
-                        menuActive = True
+                        levelSelect(screen, playerX, playerY, levelSelectActive, white, black, menuFont, levelSelectButtons, levelSelectText, creditsButtons, menuActive, gameActive, skinsButtons, skinsBannerText, skinsActive)
+                        levelSelectActive = True
                         skinsActive = False
         #print("Skins is active")
 
 def play(screen, playerX, playerY, gameActive, black, roadSurface, roadSurfaceRect, playerSurface, playerRect):
+    
     #fill screen to remove the menu stuff
     screen.fill(black)
     screen.blit(roadSurface, roadSurfaceRect)
     screen.blit(playerSurface, playerRect)
-    playerSpeed = 5
+
+    #speed variable 
+    playerSpeed = 2
     
     gameActive = True
     pygame.display.update()
+
+    #boolean to check if keys are beign held down
+    moveRight = False
+    moveLeft = False
 
     while gameActive:
         for event in pygame.event.get():
@@ -202,14 +250,34 @@ def play(screen, playerX, playerY, gameActive, black, roadSurface, roadSurfaceRe
                 sys.exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
-                    playerX += 100
-                    print(playerX)
-                    print("right")
+                    moveRight = True
                 elif event.key == pygame.K_a or event.key == pygame.K_LEFT:
-                    print("left")
+                    moveLeft = True
+            elif event.type == pygame.KEYUP:
+                if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
+                    moveRight = False
+                elif event.key == pygame.K_a or event.key == pygame.K_LEFT:
+                    moveLeft = False
+
+        # Update player position based on flags
+        if moveRight:
+            playerX += playerSpeed
+        if moveLeft:
+            playerX -= playerSpeed
+
+        #makes sure the player doesnt go past the road / screen
+        playerX = max(170, min(775, playerX))
+
+        #update playerRect position
+        playerRect.x = playerX
         
+        #redraw the screen
+        screen.fill(black)
+        screen.blit(roadSurface, roadSurfaceRect)
+        screen.blit(playerSurface, playerRect)
         
-        #print("gameActive")
+        #update
+        pygame.display.update()
 
 def main():
     # Setup
@@ -233,11 +301,14 @@ def main():
     # main menu buttons
     buttons = [
         ("PLAY", ('0x00FF00'), pygame.Rect(350, 225, 300, 75)),
-        ("CREDITS", ('0xFFFF00'), pygame.Rect(350, 325, 300, 75)),
-        ("QUIT", ('0xFF0000'), pygame.Rect(350, 425, 300, 75))
+        ("INSTRUCTIONS", ('0x0000FF'), pygame.Rect(350, 325, 300, 75)),
+        ("CREDITS", ('0xFFFF00'), pygame.Rect(350, 425, 300, 75)),
+        ("QUIT", ('0xFF0000'), pygame.Rect(350, 525, 300, 75))
     ]
 
     # credits screen variables
+    instructionsButtons = ("BACK", ('0xFFFFFF'), pygame.Rect(350, 800, 300, 75))
+
     creditsButtons = ("BACK", ('0xFFFFFF'), pygame.Rect(350, 800, 300, 75))
     
     # skin select variables
@@ -271,6 +342,7 @@ def main():
     running = True
     gameActive = False
     menuActive = True
+    instructionsActive=False
     creditsActive = False
     skinsActive = False
     levelSelectActive = False
@@ -292,11 +364,14 @@ def main():
                                     levelSelect(screen, playerX, playerY, levelSelectActive, white, black, menuFont, levelSelectButtons, levelSelectText, creditsButtons, menuActive, gameActive, skinsButtons, skinsBannerText, skinsActive)
                                     #skins(screen, skinsActive, white, black, menuFont, skinsButtons, skinsBannerText, creditsButtons, gameActive, roadSurface, roadSurfaceRect)
                                     menuActive = False
+                                    instructionsActive=False
                                     creditsActive = False
                                     gameActive = False
                                 elif text == "CREDITS":
                                     #IF YOU CLICK CREDITS BUTTON TAKES YOU TO CREDITS SCREEN
                                     credits(screen, menuFont, white, black, creditsActive, creditsButtons)
+                                elif text == "INSTRUCTIONS":
+                                    instructions(screen, menuFont, white, black, creditsActive, instructionsButtons)
                                 elif text == "QUIT":
                                     #IF YOU CLICK QUIT BUTTON CLOSES WINDOW
                                     pygame.quit()
