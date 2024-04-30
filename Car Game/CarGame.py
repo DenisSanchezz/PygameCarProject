@@ -121,6 +121,15 @@ def levelSelect(screen, playerX, playerY, levelSelectActive, white, black, menuF
     screen.blit(backButtonText, backButtonTextRect)
     screen.blit(levelSelectBanner, (365, 100))
     
+    LittleRoadSurface = pygame.image.load(os.path.join(scriptDir,"Graphics","LittleRoad.png")).convert_alpha()
+    screen.blit(LittleRoadSurface,(-280,-400))
+    
+    LittleBeachSurface = pygame.image.load(os.path.join(scriptDir,"Graphics","LittleBeachRoad.png")).convert_alpha()
+    screen.blit(LittleBeachSurface,(30,-200))
+    
+    LittleCitySurface = pygame.image.load(os.path.join(scriptDir,"Graphics","LittleCityRoad.png")).convert_alpha()
+    screen.blit(LittleCitySurface,(320,-390))
+    
     for text, color, rect in levelSelectButtons:
         pygame.draw.rect(screen, color, rect, 0)
         buttonText = menuFont.render(text, True, white)
