@@ -138,21 +138,21 @@ def levelSelect(screen, playerX, playerY, levelSelectActive, white, black, menuF
                     for text, color, rect in levelSelectButtons:
                         if rect.collidepoint(event.pos):
                             if text == "Level 1":
-                                roadSurface = pygame.image.load(os.path.join(scriptDir,"Graphics","road.png")).convert_alpha()
+                                roadSurface = pygame.image.load(os.path.join(scriptDir,"Graphics/Maps","road.png")).convert_alpha()
                                 roadSurfaceRect = roadSurface.get_rect(topleft=(0,0))
                                 
                                 skins(screen, playerX, playerY, skinsActive, white, black, menuFont, skinsButtons, skinsBannerText, creditsButtons, gameActive, roadSurface, roadSurfaceRect, levelSelectActive, levelSelectButtons, levelSelectText, menuActive)
                                 
                                 levelSelectActive = False
                             elif text == "Level 2":
-                                roadSurface = pygame.image.load(os.path.join(scriptDir,"Graphics","BeachRoad.png")).convert_alpha()
+                                roadSurface = pygame.image.load(os.path.join(scriptDir,"Graphics/Maps","BeachRoad.png")).convert_alpha()
                                 roadSurfaceRect = roadSurface.get_rect(topleft=(0,0))
                                 
                                 skins(screen, playerX, playerY, skinsActive, white, black, menuFont, skinsButtons, skinsBannerText, creditsButtons, gameActive, roadSurface, roadSurfaceRect, levelSelectActive, levelSelectButtons, levelSelectText, menuActive)
                                 
                                 levelSelectActive = False
                             elif text == "Level 3":
-                                roadSurface = pygame.image.load(os.path.join(scriptDir,"Graphics","CityRoad.png")).convert_alpha()
+                                roadSurface = pygame.image.load(os.path.join(scriptDir,"Graphics/Maps","CityRoad.png")).convert_alpha()
                                 roadSurfaceRect = roadSurface.get_rect(topleft=(0,0))
                                 
                                 skins(screen, playerX, playerY, skinsActive, white, black, menuFont, skinsButtons, skinsBannerText, creditsButtons, gameActive, roadSurface, roadSurfaceRect, levelSelectActive, levelSelectButtons, levelSelectText, menuActive)
@@ -233,7 +233,18 @@ def play(screen, playerX, playerY, gameActive, black, roadSurface, roadSurfaceRe
     screen.blit(roadSurface, roadSurfaceRect)
     screen.blit(playerSurface, playerRect)
 
-    #speed variable 
+    #NPC Cars
+    #variables for NPC cars
+    npcX = 200
+    npcY = 100
+    
+    npcSurface = pygame.image.load(os.path.join(scriptDir, "Graphics/Sprites","RedCar.png")).convert_alpha()
+    npcRect = npcSurface.get_rect(midbottom=(npcX, npcY))
+    
+    screen.blit(npcSurface, npcRect)
+    
+    #player speed variable
+    # change to make player car faster or slower 
     playerSpeed = 2
     
     gameActive = True
@@ -259,11 +270,19 @@ def play(screen, playerX, playerY, gameActive, black, roadSurface, roadSurfaceRe
                 elif event.key == pygame.K_a or event.key == pygame.K_LEFT:
                     moveLeft = False
 
-        # Update player position based on flags
+        #checks if player movement booleans are true or not
         if moveRight:
             playerX += playerSpeed
         if moveLeft:
             playerX -= playerSpeed
+
+        #npc stuff
+        npcSpawnPoint = (randint(1, 2), 1200)
+        
+        if npcSpawnPoint == (1, 1200):
+            pass
+        
+        npcY += 10
 
         #makes sure the player doesnt go past the road / screen
         playerX = max(170, min(775, playerX))
@@ -275,6 +294,7 @@ def play(screen, playerX, playerY, gameActive, black, roadSurface, roadSurfaceRe
         screen.fill(black)
         screen.blit(roadSurface, roadSurfaceRect)
         screen.blit(playerSurface, playerRect)
+        screen.blit(npcSurface, npcRect)
         
         #update
         pygame.display.update()
