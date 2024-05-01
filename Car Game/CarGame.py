@@ -1,7 +1,7 @@
 import pygame
 import sys
 import os.path
-from random import randint
+from random import random
 scriptDir = os.path.dirname(os.path.abspath(__file__))
 
 def menu(screen, menuFont, buttons, menuActive):
@@ -230,29 +230,37 @@ def play(screen, playerX, playerY, gameActive, black, roadSurface, roadSurfaceRe
     
     #fill screen to remove the menu stuff
     screen.fill(black)
-    screen.blit(roadSurface, roadSurfaceRect)
-    screen.blit(playerSurface, playerRect)
 
     #NPC Cars
     #variables for NPC cars
-    npcX = 200
+    
+    # 275, 425
+    npcX = 425
     npcY = 100
     
-    npcSurface = pygame.image.load(os.path.join(scriptDir, "Graphics/Sprites","RedCar.png")).convert_alpha()
+    npcSurface = pygame.image.load(os.path.join(scriptDir, "Graphics/Sprites/NPC","NPCRedCar.png")).convert_alpha()
     npcRect = npcSurface.get_rect(midbottom=(npcX, npcY))
     
+    npcSpawnRate = 1
+    npcSpeed = 1
+    
+    npcCars = []
+    
+    #blit
+    screen.blit(roadSurface, roadSurfaceRect)
+    screen.blit(playerSurface, playerRect)
     screen.blit(npcSurface, npcRect)
     
     #player speed variable
     # change to make player car faster or slower 
     playerSpeed = 2
-    
-    gameActive = True
-    pygame.display.update()
 
     #boolean to check if keys are beign held down
     moveRight = False
     moveLeft = False
+    
+    gameActive = True
+    pygame.display.update()
 
     while gameActive:
         for event in pygame.event.get():
@@ -277,12 +285,16 @@ def play(screen, playerX, playerY, gameActive, black, roadSurface, roadSurfaceRe
             playerX -= playerSpeed
 
         #npc stuff
-        npcSpawnPoint = (randint(1, 2), 1200)
         
-        if npcSpawnPoint == (1, 1200):
+        
+        
+        npcY += npcSpeed
+        npcRect.y = npcY
+        print(npcY)
+        
+        if playerRect.colliderect(npcRect):
+            #you crashed
             pass
-        
-        npcY += 10
 
         #makes sure the player doesnt go past the road / screen
         playerX = max(170, min(775, playerX))
@@ -350,7 +362,7 @@ def main():
     levelSelectText = "Select Level"
     
     # player variable
-    playerX = 300
+    playerX = 550
     playerY = 800
     
     #playerSurface = pygame.image.load(os.path.join(scriptDir,"Graphics/Sprites","sprite.png")).convert_alpha()
