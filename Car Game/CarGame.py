@@ -1,7 +1,7 @@
 import pygame
 import sys
 import os.path
-from random import random
+from random import randint
 scriptDir = os.path.dirname(os.path.abspath(__file__))
 
 def menu(screen, menuFont, buttons, menuActive):
@@ -235,7 +235,7 @@ def play(screen, playerX, playerY, gameActive, black, roadSurface, roadSurfaceRe
     #variables for NPC cars
     
     # 275, 425
-    npcX = 425
+    npcX = 0
     npcY = 100
     
     npcSurface = pygame.image.load(os.path.join(scriptDir, "Graphics/Sprites/NPC","NPCRedCar.png")).convert_alpha()
@@ -244,7 +244,7 @@ def play(screen, playerX, playerY, gameActive, black, roadSurface, roadSurfaceRe
     npcSpawnRate = 1
     npcSpeed = 1
     
-    npcCars = []
+    npcCars = 0
     
     #blit
     screen.blit(roadSurface, roadSurfaceRect)
@@ -283,14 +283,29 @@ def play(screen, playerX, playerY, gameActive, black, roadSurface, roadSurfaceRe
             playerX += playerSpeed
         if moveLeft:
             playerX -= playerSpeed
-
+        
         #npc stuff
+        if npcCars == 0:
+            npcLaneChance = randint(0,1)
+            if npcLaneChance == 0:
+                npcX = 275
+                npcY = 0
+                npcCars += 1
+            elif npcLaneChance == 1:
+                npcX = 425
+                npcY = 0
+                npcCars += 1
+        elif npcCars == 1:
+            npcY += npcSpeed
+            npcRect.y = npcY
+            screen.blit(npcSurface, npcRect)
+            
+        if npcY > 1000:
+                npcCars == 0
         
-        
-        
-        npcY += npcSpeed
-        npcRect.y = npcY
-        print(npcY)
+        #npcY += npcSpeed
+        #npcRect.y = npcY
+        #print(npcY)
         
         if playerRect.colliderect(npcRect):
             #you crashed
@@ -306,7 +321,7 @@ def play(screen, playerX, playerY, gameActive, black, roadSurface, roadSurfaceRe
         screen.fill(black)
         screen.blit(roadSurface, roadSurfaceRect)
         screen.blit(playerSurface, playerRect)
-        screen.blit(npcSurface, npcRect)
+        #screen.blit(npcSurface, npcRect)
         
         #update
         pygame.display.update()
