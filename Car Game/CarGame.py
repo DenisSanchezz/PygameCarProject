@@ -268,7 +268,20 @@ def play(screen, playerX, playerY, gameActive, black, roadSurface, roadSurfaceRe
     
     for spritePath in npcCarSprites:
         npcSurfaces.append(pygame.image.load(os.path.join(scriptDir, "Graphics/Sprites", spritePath)).convert_alpha())
-
+    
+    #obstacles
+    #575
+    barrierX = 725
+    barrierY = 600
+    
+    barrierObstacle = pygame.image.load(os.path.join(scriptDir, "Graphics/Sprites","ObstacleOne.png")).convert_alpha()
+    barrierObstacleRect = barrierObstacle.get_rect(midbottom=(barrierX, barrierY))
+    
+    barrierSpawnRate = 1 #0.005
+    barrierSpeed = .51
+    
+    barriers = []
+    
     #player speed adjust to whatever
     playerSpeed = 1
 
@@ -318,8 +331,8 @@ def play(screen, playerX, playerY, gameActive, black, roadSurface, roadSurfaceRe
             
             #if there is enough space for a new car
             if spawnNewCar:
-                lane = random.randint(1, 2)  #randomly select a lane on the left
-                npcX = 275 if lane == 1 else 425
+                leftLane = random.randint(1, 2)  #randomly select a lane on the left
+                npcX = 275 if leftLane == 1 else 425
                 npcY = -200  #off screen coordinate
                 npcRect = npcSurface.get_rect(midbottom=(npcX, npcY))
                 npcCars.append(npcRect)
@@ -332,9 +345,30 @@ def play(screen, playerX, playerY, gameActive, black, roadSurface, roadSurfaceRe
             if playerRect.colliderect(npcRect):
                 #put logic for when the player hits another car here
                 #
-                pass
+                print("you hit a car")
+        
+        if random.random() < barrierSpawnRate:
+            spawnNewBarrier = True
+            for barrierObstacleRect in barriers:
+                if abs(barrierObstacleRect.x - barrierX) < barrierObstacleRect.width * 2:
+                    spawnNewBarrier = False
+                    break
+            
+            if spawnNewBarrier:
+                rightLane = random.randint(1, 2)
+                barrierX = 575 if rightLane == 1 else 725
+                barrierY = -100
+                barrierObstacleRect = barrierObstacle.get_rect(midbottom=(barrierX, barrierY))
+                barriers.append(barrierObstacleRect)
+        
+        for barrierObstacleRect in barriers[:]:
+            barrierObstacleRect.y += barrierSpeed
+            if barrierObstacleRect.y > 1000:
+                barriers.remove(barrierObstacleRect)
+            if playerRect.colliderect(barrierObstacleRect):
+                print("you hit the barrier")
 
-
+        print(barrierObstacleRect.y)
         #road boundaries
         playerX = max(170, min(775, playerX))
 
@@ -346,6 +380,7 @@ def play(screen, playerX, playerY, gameActive, black, roadSurface, roadSurfaceRe
         screen.blit(roadSurface, roadSurfaceRect)
         screen.blit(playerSurface, playerRect)
         screen.blit(npcSurface, npcRect)
+        screen.blit(barrierObstacle, barrierObstacleRect)
         
         
         #update display
@@ -402,7 +437,7 @@ def main():
     levelSelectText = "Select Level"
     
     # player variable
-    playerX = 300
+    playerX = 545
     playerY = 800
     
     #playerSurface = pygame.image.load(os.path.join(scriptDir,"Graphics/Sprites","sprite.png")).convert_alpha()
