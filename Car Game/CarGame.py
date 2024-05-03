@@ -1,7 +1,7 @@
 import pygame
 import sys
 import os.path
-from random import randint
+import random
 scriptDir = os.path.dirname(os.path.abspath(__file__))
 
 def menu(screen, menuFont, buttons, menuActive):
@@ -121,13 +121,13 @@ def levelSelect(screen, playerX, playerY, levelSelectActive, white, black, menuF
     screen.blit(backButtonText, backButtonTextRect)
     screen.blit(levelSelectBanner, (365, 100))
     
-    LittleRoadSurface = pygame.image.load(os.path.join(scriptDir,"Graphics","LittleRoad.png")).convert_alpha()
+    LittleRoadSurface = pygame.image.load(os.path.join(scriptDir,"Graphics/Maps","LittleRoad.png")).convert_alpha()
     screen.blit(LittleRoadSurface,(-280,-400))
     
-    LittleBeachSurface = pygame.image.load(os.path.join(scriptDir,"Graphics","LittleBeachRoad.png")).convert_alpha()
+    LittleBeachSurface = pygame.image.load(os.path.join(scriptDir,"Graphics/Maps","LittleBeachRoad.png")).convert_alpha()
     screen.blit(LittleBeachSurface,(30,-200))
     
-    LittleCitySurface = pygame.image.load(os.path.join(scriptDir,"Graphics","LittleCityRoad.png")).convert_alpha()
+    LittleCitySurface = pygame.image.load(os.path.join(scriptDir,"Graphics/Maps","LittleCityRoad.png")).convert_alpha()
     screen.blit(LittleCitySurface,(320,-390))
     
     for text, color, rect in levelSelectButtons:
@@ -147,21 +147,21 @@ def levelSelect(screen, playerX, playerY, levelSelectActive, white, black, menuF
                     for text, color, rect in levelSelectButtons:
                         if rect.collidepoint(event.pos):
                             if text == "Level 1":
-                                roadSurface = pygame.image.load(os.path.join(scriptDir,"Graphics","road.png")).convert_alpha()
+                                roadSurface = pygame.image.load(os.path.join(scriptDir,"Graphics/Maps","road.png")).convert_alpha()
                                 roadSurfaceRect = roadSurface.get_rect(topleft=(0,0))
                                 
                                 skins(screen, playerX, playerY, skinsActive, white, black, menuFont, skinsButtons, skinsBannerText, creditsButtons, gameActive, roadSurface, roadSurfaceRect, levelSelectActive, levelSelectButtons, levelSelectText, menuActive)
                                 
                                 levelSelectActive = False
                             elif text == "Level 2":
-                                roadSurface = pygame.image.load(os.path.join(scriptDir,"Graphics","BeachRoad.png")).convert_alpha()
+                                roadSurface = pygame.image.load(os.path.join(scriptDir,"Graphics/Maps","BeachRoad.png")).convert_alpha()
                                 roadSurfaceRect = roadSurface.get_rect(topleft=(0,0))
                                 
                                 skins(screen, playerX, playerY, skinsActive, white, black, menuFont, skinsButtons, skinsBannerText, creditsButtons, gameActive, roadSurface, roadSurfaceRect, levelSelectActive, levelSelectButtons, levelSelectText, menuActive)
                                 
                                 levelSelectActive = False
                             elif text == "Level 3":
-                                roadSurface = pygame.image.load(os.path.join(scriptDir,"Graphics","CityRoad.png")).convert_alpha()
+                                roadSurface = pygame.image.load(os.path.join(scriptDir,"Graphics/Maps","CityRoad.png")).convert_alpha()
                                 roadSurfaceRect = roadSurface.get_rect(topleft=(0,0))
                                 
                                 skins(screen, playerX, playerY, skinsActive, white, black, menuFont, skinsButtons, skinsBannerText, creditsButtons, gameActive, roadSurface, roadSurfaceRect, levelSelectActive, levelSelectButtons, levelSelectText, menuActive)
@@ -239,18 +239,45 @@ def play(screen, playerX, playerY, gameActive, black, roadSurface, roadSurfaceRe
     
     #fill screen to remove the menu stuff
     screen.fill(black)
-    screen.blit(roadSurface, roadSurfaceRect)
-    screen.blit(playerSurface, playerRect)
 
-    #speed variable 
-    playerSpeed = 2
+    #ai cars stuff
+    npcX = 0
+    npcY = -200  #the starting position offscreen
+
+    npcSurface = pygame.image.load(os.path.join(scriptDir, "Graphics/Sprites","NPCRedCar.png")).convert_alpha()
+    npcRect = npcSurface.get_rect(midbottom=(npcX, npcY))
+
+    #list for car sprites
+    npcCarSprites = [
+        #paths
+        "YellowCar.png",
+        "WhiteCar.png",
+        "BlueCar.png",
+        "BlackCar.png",
+        "NPCRedCar.png"
+    ]
+    
+    npcSpawnRate = 0.01
+    npcSpeed = 0.7 #adjust to whatever speed the ai car should go
+    
+    #list to hold cars
+    npcCars = []
+
+    #list to hold surfaces for the npcs
+    npcSurfaces = []
+    
+    for spritePath in npcCarSprites:
+        npcSurfaces.append(pygame.image.load(os.path.join(scriptDir, "Graphics/Sprites", spritePath)).convert_alpha())
+
+    #player speed adjust to whatever
+    playerSpeed = 1
+
+    #boolean to check if keys are being held down
+    moveRight = False
+    moveLeft = False
     
     gameActive = True
     pygame.display.update()
-
-    #boolean to check if keys are beign held down
-    moveRight = False
-    moveLeft = False
 
     while gameActive:
         for event in pygame.event.get():
@@ -268,24 +295,60 @@ def play(screen, playerX, playerY, gameActive, black, roadSurface, roadSurfaceRe
                 elif event.key == pygame.K_a or event.key == pygame.K_LEFT:
                     moveLeft = False
 
-        # Update player position based on flags
+        #player movement
         if moveRight:
             playerX += playerSpeed
         if moveLeft:
             playerX -= playerSpeed
 
-        #makes sure the player doesnt go past the road / screen
+        #spawning cars 
+        if random.random() < npcSpawnRate:
+
+            #randomNPCCar = random.choice(npcCarSprites)
+
+            #npcSurface = npcSurfaces[npcCarSprites.index(randomNPCCar)]
+
+            #checks if there's enough space for a new car so they do not overlap
+            spawnNewCar = True
+            for npcRect in npcCars:
+                if abs(npcRect.x - npcX) < npcRect.width * 2:
+                    #if the distance between the cars is too close 
+                    spawnNewCar = False
+                    break
+            
+            #if there is enough space for a new car
+            if spawnNewCar:
+                lane = random.randint(1, 2)  #randomly select a lane on the left
+                npcX = 275 if lane == 1 else 425
+                npcY = -200  #off screen coordinate
+                npcRect = npcSurface.get_rect(midbottom=(npcX, npcY))
+                npcCars.append(npcRect)
+
+        #ai car movement and if the player hits one
+        for npcRect in npcCars[:]:
+            npcRect.y += npcSpeed  #update car position
+            if npcRect.y > 1000:  #if the car goes off screen remove it
+                npcCars.remove(npcRect)  
+            if playerRect.colliderect(npcRect):
+                #put logic for when the player hits another car here
+                #
+                pass
+
+
+        #road boundaries
         playerX = max(170, min(775, playerX))
 
-        #update playerRect position
+        #updates the players position
         playerRect.x = playerX
         
-        #redraw the screen
+        #redraws the screen
         screen.fill(black)
         screen.blit(roadSurface, roadSurfaceRect)
         screen.blit(playerSurface, playerRect)
+        screen.blit(npcSurface, npcRect)
         
-        #update
+        
+        #update display
         pygame.display.update()
 
 def main():
