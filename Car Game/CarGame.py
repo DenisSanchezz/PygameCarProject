@@ -258,7 +258,7 @@ def play(screen, playerX, playerY, gameActive, black, roadSurface, roadSurfaceRe
     ]
     
     npcSpawnRate = 0.01
-    npcSpeed = 0.7 #adjust to whatever speed the ai car should go
+    npcSpeed = 0.6 #adjust to whatever speed the ai car should go
     
     #list to hold cars
     npcCars = []
@@ -277,8 +277,8 @@ def play(screen, playerX, playerY, gameActive, black, roadSurface, roadSurfaceRe
     barrierObstacle = pygame.image.load(os.path.join(scriptDir, "Graphics/Sprites","ObstacleOne.png")).convert_alpha()
     barrierObstacleRect = barrierObstacle.get_rect(midbottom=(barrierX, barrierY))
     
-    barrierSpawnRate = 1 #0.005
-    barrierSpeed = .51
+    barrierSpawnRate = 0.005 #0.005
+    barrierSpeed = 1
     
     barriers = []
     
@@ -318,7 +318,6 @@ def play(screen, playerX, playerY, gameActive, black, roadSurface, roadSurfaceRe
         if random.random() < npcSpawnRate:
 
             #randomNPCCar = random.choice(npcCarSprites)
-
             #npcSurface = npcSurfaces[npcCarSprites.index(randomNPCCar)]
 
             #checks if there's enough space for a new car so they do not overlap
@@ -362,7 +361,7 @@ def play(screen, playerX, playerY, gameActive, black, roadSurface, roadSurfaceRe
                 barriers.append(barrierObstacleRect)
         
         for barrierObstacleRect in barriers[:]:
-            barrierObstacleRect.y += barrierSpeed
+            barrierObstacleRect.y += barrierSpeed #figure out how to make this lower than 1
             if barrierObstacleRect.y > 1000:
                 barriers.remove(barrierObstacleRect)
             if playerRect.colliderect(barrierObstacleRect):
