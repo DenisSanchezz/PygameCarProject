@@ -74,7 +74,7 @@ def instructions(screen, menuFont, white, black, instructionsActive, instruction
                         #If the left mouse button clicks back button takes out of this loop
                         instructionsActive = False
 
-def credits(screen, creditsFont, menuFont, white, black, creditsActive, creditsButtons):
+def credits(screen, smallCreditsFont, creditsFont, menuFont, white, black, creditsActive, creditsButtons):
     # Clears the screen adn sets background color to black
     screen.fill(black)
     
@@ -96,15 +96,19 @@ def credits(screen, creditsFont, menuFont, white, black, creditsActive, creditsB
                                     True, white)
     creditsText5 = creditsFont.render("Denis Sanchez",                                  
                                     True, white)
-    creditsText6 = creditsFont.render("Main Menu Background - https://www.wallpaperflare.com/need-for-speed-need-for-speed-heat-wallpaper-giisx/download", True, white)
+    creditsText6 = smallCreditsFont.render("Main Menu Background - https://www.wallpaperflare.com/need-for-speed-need-for-speed-heat-wallpaper-giisx/download", True, white)
+    creditsText7 = smallCreditsFont.render("Car Sprites - https://tokka.itch.io/top-down-car", True, white)
+    creditsText8 = smallCreditsFont.render("Road - https://opengameart.org/content/2d-top-down-highway-background", True, white)
     
     # Blits the text
-    screen.blit(creditsText1, (600, 60))
-    screen.blit(creditsText2, (650, 140))
-    screen.blit(creditsText3, (650, 220))
-    screen.blit(creditsText4, (650, 280))
-    screen.blit(creditsText5, (650, 340))
-    screen.blit(creditsText6, (100, 60))
+    screen.blit(creditsText1, (0, 30))
+    screen.blit(creditsText2, (50, 110))
+    screen.blit(creditsText3, (50, 190))
+    screen.blit(creditsText4, (50, 250))
+    screen.blit(creditsText5, (50, 310))
+    screen.blit(creditsText6, (50, 370))
+    screen.blit(creditsText7, (50, 390))
+    screen.blit(creditsText8, (50, 410))
     screen.blit(backButtonText, backButtonTextRect)
 
     # Sets boolean to true to indicate that this loop is active
@@ -251,7 +255,8 @@ def skins(screen, playerX, playerY, skinsActive, white, black, menuFont, skinsBu
                             if text == "Red":
                                 playerSurface = pygame.image.load(os.path.join(scriptDir,"Graphics/Sprites","RedCar.png")).convert_alpha()
                                 playerRect = playerSurface.get_rect(midbottom=(playerX,playerY))
-                                play(screen, playerX, playerY, gameActive, black, roadSurface, roadSurfaceRect, playerSurface, playerRect)
+                                #play(screen, playerX, playerY, gameActive, black, roadSurface, roadSurfaceRect, playerSurface, playerRect)
+                                countdown(screen, playerX, playerY, gameActive, black, roadSurface, roadSurfaceRect, playerSurface, playerRect)
                                 skinsActive = False
                             elif text == "Black":
                                 playerSurface = pygame.image.load(os.path.join(scriptDir,"Graphics/Sprites","BlackCar.png")).convert_alpha()
@@ -280,6 +285,15 @@ def skins(screen, playerX, playerY, skinsActive, white, black, menuFont, skinsBu
                         levelSelect(screen, playerX, playerY, levelSelectActive, white, black, menuFont, levelSelectButtons, levelSelectText, creditsButtons, menuActive, gameActive, skinsButtons, skinsBannerText, skinsActive)
                         levelSelectActive = True
                         skinsActive = False
+
+def countdown(screen, playerX, playerY, gameActive, black, roadSurface, roadSurfaceRect, playerSurface, playerRect):
+    screen.fill(black)
+    
+    countdownActive = True
+    pygame.display.update
+    
+    while countdownActive:
+        pass
 
 def play(screen, playerX, playerY, gameActive, black, roadSurface, roadSurfaceRect, playerSurface, playerRect):
     
@@ -480,6 +494,7 @@ def main():
     creditsButtons = ("BACK", ('0xFFFFFF'), pygame.Rect(350, 800, 300, 75))
     
     creditsFont = pygame.font.SysFont("Consolas", 30, bold=True)
+    smallCreditsFont = pygame.font.SysFont("Consolas", 15)
     
     # Setup Variables for the Skin Selection screens
     skinsBannerText = "SKIN SELECTION" # text on the top of the screen to label where you are 
@@ -556,7 +571,7 @@ def main():
                                     
                                 elif text == "CREDITS":
                                     # If you click the credits button then it takes you to the credits screen
-                                    credits(screen, creditsFont, menuFont, white, black, creditsActive, creditsButtons)
+                                    credits(screen, smallCreditsFont, creditsFont, menuFont, white, black, creditsActive, creditsButtons)
                                     
                                 elif text == "INSTRUCTIONS":
                                     # If the mouse clicks the rect with "INSTRUCTIONS" then takes you to the instructions screen
