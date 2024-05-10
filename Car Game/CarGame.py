@@ -255,28 +255,27 @@ def skins(screen, playerX, playerY, skinsActive, white, black, menuFont, skinsBu
                             if text == "Red":
                                 playerSurface = pygame.image.load(os.path.join(scriptDir,"Graphics/Sprites","RedCar.png")).convert_alpha()
                                 playerRect = playerSurface.get_rect(midbottom=(playerX,playerY))
-                                #play(screen, playerX, playerY, gameActive, black, roadSurface, roadSurfaceRect, playerSurface, playerRect)
-                                countdown(screen, playerX, playerY, gameActive, black, roadSurface, roadSurfaceRect, playerSurface, playerRect)
+                                countdown(screen, playerX, playerY, gameActive, menuFont, black, white, roadSurface, roadSurfaceRect, playerSurface, playerRect)
                                 skinsActive = False
                             elif text == "Black":
                                 playerSurface = pygame.image.load(os.path.join(scriptDir,"Graphics/Sprites","BlackCar.png")).convert_alpha()
                                 playerRect = playerSurface.get_rect(midbottom=(playerX,playerY))
-                                play(screen, playerX, playerY, gameActive, black, roadSurface, roadSurfaceRect, playerSurface, playerRect)
+                                countdown(screen, playerX, playerY, gameActive, menuFont, black, white, roadSurface, roadSurfaceRect, playerSurface, playerRect)
                                 skinsActive = False
                             elif text == "Blue":
                                 playerSurface = pygame.image.load(os.path.join(scriptDir,"Graphics/Sprites","BlueCar.png")).convert_alpha()
                                 playerRect = playerSurface.get_rect(midbottom=(playerX,playerY))
-                                play(screen, playerX, playerY, gameActive, black, roadSurface, roadSurfaceRect, playerSurface, playerRect)
+                                countdown(screen, playerX, playerY, gameActive, menuFont, black, white, roadSurface, roadSurfaceRect, playerSurface, playerRect)
                                 skinsActive = False
                             elif text == "White":
                                 playerSurface = pygame.image.load(os.path.join(scriptDir,"Graphics/Sprites","WhiteCar.png")).convert_alpha()
                                 playerRect = playerSurface.get_rect(midbottom=(playerX,playerY))
-                                play(screen, playerX, playerY, gameActive, black, roadSurface, roadSurfaceRect, playerSurface, playerRect)
+                                countdown(screen, playerX, playerY, gameActive, menuFont, black, white, roadSurface, roadSurfaceRect, playerSurface, playerRect)
                                 skinsActive = False
                             elif text == "Yellow":
                                 playerSurface = pygame.image.load(os.path.join(scriptDir,"Graphics/Sprites","YellowCar.png")).convert_alpha()
                                 playerRect = playerSurface.get_rect(midbottom=(playerX,playerY))
-                                play(screen, playerX, playerY, gameActive, black, roadSurface, roadSurfaceRect, playerSurface, playerRect)
+                                countdown(screen, playerX, playerY, gameActive, menuFont, black, white, roadSurface, roadSurfaceRect, playerSurface, playerRect)
                                 skinsActive = False
                     # Checks if the left mouse button is clicked 
                     # while collided with the back button
@@ -286,14 +285,51 @@ def skins(screen, playerX, playerY, skinsActive, white, black, menuFont, skinsBu
                         levelSelectActive = True
                         skinsActive = False
 
-def countdown(screen, playerX, playerY, gameActive, black, roadSurface, roadSurfaceRect, playerSurface, playerRect):
+def countdown(screen, playerX, playerY, gameActive, menuFont, black, white, roadSurface, roadSurfaceRect, playerSurface, playerRect):
     screen.fill(black)
     
+    fontSize = 80
+    countdownFont = pygame.font.SysFont("Consolas", fontSize, bold=True)
+    
+    count = "3"
+    countdown = countdownFont.render(count, True, white)
+    
     countdownActive = True
-    pygame.display.update
+    pygame.display.update()
     
     while countdownActive:
-        pass
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+        
+        screen.blit(countdown, (485, 480))
+        pygame.display.update()
+        print(count)
+        pygame.time.wait(1000)
+        
+        screen.fill(black)
+        count = "2"
+        fontSize = 60
+        countdownFont = pygame.font.SysFont("Consolas", fontSize, bold=True)
+        print(count)
+        countdown = countdownFont.render(count, True, white)
+        screen.blit(countdown, (485, 480))
+        pygame.display.update()
+        pygame.time.wait(1000)
+        
+        screen.fill(black)
+        count = "1"
+        fontSize = 40
+        countdownFont = pygame.font.SysFont("Consolas", fontSize, bold=True)
+        print(count)
+        countdown = countdownFont.render(count, True, white)
+        screen.blit(countdown, (500, 500))
+        pygame.display.update()
+        pygame.time.wait(1000)
+        
+        play(screen, playerX, playerY, gameActive, black, roadSurface, roadSurfaceRect, playerSurface, playerRect)
+        countdownActive = False
 
 def play(screen, playerX, playerY, gameActive, black, roadSurface, roadSurfaceRect, playerSurface, playerRect):
     
@@ -335,7 +371,7 @@ def play(screen, playerX, playerY, gameActive, black, roadSurface, roadSurfaceRe
     
     # The barrier obstacles corridinates
     barrierX = 725
-    barrierY = 600
+    barrierY = -200
     
     # makes surface and rect for barrier
     barrierObstacle = pygame.image.load(os.path.join(scriptDir, "Graphics/Sprites","ObstacleOne.png")).convert_alpha()
