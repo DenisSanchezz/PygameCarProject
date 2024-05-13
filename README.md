@@ -18,6 +18,16 @@ Braeden Boyce
 
 Our game, the Swift and the Sulky, is a 2D driving game with obstacles and traffic to avoid in order to finish a level. The game will include skins, an unique art style, and challenging levels. 
 
+## **How to download the game**
+
+You will need Pygame and the latest version of Python to play the game.
+
+To download the game click the green code button at the top of the repository and download the zip.
+
+Find the location where the zip file downloaded and extract it to where ever you would like
+
+Locate the extracted files and open Cargame.py in your editor of choice and run the python file.
+
 ## **Citations**
 
 ### **Graphics**
