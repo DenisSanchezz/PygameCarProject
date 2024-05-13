@@ -24,7 +24,11 @@ You will need Pygame and the latest version of Python to play the game.
 
 To download the game click the green code button at the top of the repository and download the zip.
 
+![image](https://github.com/DenisSanchezz/PygameCarProject/assets/156366121/c9553f57-278d-486f-abec-dd425345c080)
+
 Find the location where the zip file downloaded and extract it to where ever you would like
+
+![image](https://github.com/DenisSanchezz/PygameCarProject/assets/156366121/d7e0d2a3-238b-40dc-87fb-819bd9b69d98)
 
 Locate the extracted files and open Cargame.py in your editor of choice and run the python file.
 
